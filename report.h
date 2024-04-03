@@ -7,13 +7,13 @@
 
 #include <stdint.h>
 
-struct time_report{
+typedef struct {
     float time;
     uint8_t cores;
     char version_name[50];
-};
+} time_report;
 
-struct time_report create_time_report(float time,
+time_report create_time_report(float time,
                                       uint8_t cores,
                                       char *version_name);
 #endif //HPC_REPORT_H

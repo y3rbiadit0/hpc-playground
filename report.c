@@ -4,10 +4,10 @@
 #include <string.h>
 #include "report.h"
 
-struct time_report create_time_report(float time,
+time_report create_time_report(float time,
                                       uint8_t cores,
                                       char *version_name) {
-    struct time_report report_data;
+    time_report report_data;
 
     report_data.cores = cores;
     report_data.time = time;
