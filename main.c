@@ -143,7 +143,7 @@ time_report multiply_matrix_V3(uint8_t cores) {
     time_report report_data;
     struct timeval start, end;
     gettimeofday(&start, NULL);
-    #pragma omp parallel for num_threads(cores)
+#pragma omp parallel for num_threads(cores)
     for (int i = 0; i < N; i++) {
         for (int k = 0; k < N; k++) {
             for (int j = 0; j < N; j++) {
@@ -155,7 +155,7 @@ time_report multiply_matrix_V3(uint8_t cores) {
     report_data = create_time_report(
             tdiff(&start, &end),
             cores,
-            "Version 3 - OpenMP with N cores"
+            "Version 3 - OpenMP"
     );
     printf("%0.6f\n", report_data.time);
     return report_data;
@@ -189,7 +189,8 @@ int8_t dump_report_data_to_csv(time_report time_data_reports[REPORT_DATA_SIZE]) 
     }
 
     for (uint8_t i = 0; i < REPORT_DATA_SIZE; i++)
-        fprintf(fp, "%s,%d,%f\n", time_data_reports[i].version_name, time_data_reports[i].cores, time_data_reports[i].time);
+        fprintf(fp, "%s,%d,%f\n", time_data_reports[i].version_name, time_data_reports[i].cores,
+                time_data_reports[i].time);
 
     return 0;
 }
