@@ -57,4 +57,10 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
 
 
-add_executable(hpc main.c report.h report.c)
+add_executable(hpc main.c report.h report.c
+        matrix_multiplication.h
+        matrix_multiplication.c
+        utils.h
+        utils.c
+        matrix_utils.h
+        matrix_utils.c)
