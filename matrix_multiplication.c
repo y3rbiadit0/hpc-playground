@@ -122,3 +122,34 @@ multiply_matrix_V3(double **matrix_A, double **matrix_B, double **matrix_C, uint
     printf("%0.6f\n", report_data.time);
     return report_data;
 }
+
+time_report
+multiply_matrix_V4(double **matrix_A, double **matrix_B, double **matrix_C, uint32_t matrix_size, uint8_t cores,
+                   uint32_t tile_size) {
+    time_report report_data;
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
+
+    //Process the entire matrix
+#pragma omp parallel for num_threads(cores)
+    for (int i_matrix = 0; i_matrix < matrix_size; i_matrix += tile_size)
+#pragma omp parallel for num_threads(cores)
+            for (int j_matrix = 0; j_matrix < matrix_size; j_matrix += tile_size)
+                for (int k_matrix = 0; k_matrix < matrix_size; k_matrix += tile_size)
+                    // Process Tile matrix
+                    for (int i_tile = 0; i_tile < tile_size; i_tile++)
+                        for (int k_tile = 0; k_tile < tile_size; k_tile++)
+                            for (int j_tile = 0; j_tile < tile_size; j_tile++)
+                                matrix_C[i_matrix + i_tile][j_matrix + j_tile] +=
+                                        matrix_A[i_matrix + i_tile][k_matrix + k_tile] *
+                                        matrix_B[k_matrix + k_tile][j_matrix + j_tile];
+
+    gettimeofday(&end, NULL);
+    report_data = create_time_report(
+            time_difference(&start, &end),
+            cores,
+            "Version 4 - Tiling - OpenMP"
+    );
+    printf("%0.6f\n", report_data.time);
+    return report_data;
+}
